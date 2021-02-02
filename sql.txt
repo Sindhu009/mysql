@@ -1,0 +1,422 @@
+mysql> create database recipes;
+Query OK, 1 row affected (0.19 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| checklist          |
+| emp                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| recipes            |
+| sinjdbc            |
+| sqlbatch           |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use recipes;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| recipes    |
++------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE recipes (
+    ->   recipe_id INT NOT NULL,
+    ->   recipe_name VARCHAR(30) NOT NULL,
+    ->   PRIMARY KEY (recipe_id),
+    ->   UNIQUE (recipe_name)
+    -> );
+Query OK, 0 rows affected (2.55 sec)
+
+mysql> INSERT INTO recipes
+    ->     (recipe_id, recipe_name)
+    -> VALUES
+    ->     (1,"Tacos"),
+    ->     (2,"Tomato Soup"),
+    ->     (3,"Grilled Cheese");
+Query OK, 3 rows affected (0.31 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+mysql> desc recipes;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| recipe_id   | int         | NO   | PRI | NULL    |       |
+| recipe_name | varchar(30) | NO   | UNI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+ysql> insert into recipes(recipe_id,recipe_name)values(4,"pizza"),(5,"biriyani");
+Query OK, 2 rows affected (0.14 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc recipes;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| recipe_id   | int         | NO   | PRI | NULL    |       |
+| recipe_name | varchar(30) | NO   | UNI | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.10 sec)
+
+mysql> select * from recipes;
++-----------+----------------+
+| recipe_id | recipe_name    |
++-----------+----------------+
+|         5 | biriyani       |
+|         3 | Grilled Cheese |
+|         4 | pizza          |
+|         1 | Tacos          |
+|         2 | Tomato Soup    |
++-----------+----------------+
+5 rows in set (0.36 sec)
+mysql> update recipes set recipe_name='burger' where recipe_id=1;
+Query OK, 1 row affected (0.20 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+
+mysql> alter table customers add phoneno int;
+Query OK, 0 rows affected (3.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from customers;
++----+--------+-----+-------------+----------+---------+
+| ID | NAME   | AGE | ADDRESS     | SALARY   | phoneno |
++----+--------+-----+-------------+----------+---------+
+|  1 | sindhu |  21 | magadi      | 25000.00 |    NULL |
+|  2 | chai   |  22 | chitradurga | 24000.00 |    NULL |
+|  3 | vedh   |  22 | banglore    | 25000.00 |    NULL |
+|  4 | bindu  |  24 | magadi      | 33000.00 |    NULL |
+|  5 | san    |  23 | magadi      | 13000.00 |    NULL |
+|  6 | suchi  |  24 | banglore    | 17000.00 |    NULL |
++----+--------+-----+-------------+----------+---------+
+6 rows in set (0.04 sec)
+
+mysql> alter customers modify salary smallint notnull;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'customers modify salary smallint notnull' at line 1
+mysql> alter customers modify salary smallint notnull,modify adress varchar(70) not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'customers modify salary smallint notnull,modify adress varchar(70) not null' at line 1
+mysql> select * from customers where name like'%u';
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
+|  4 | bindu  |  24 | magadi  | 33000.00 | 56789012 |
++----+--------+-----+---------+----------+----------+
+2 rows in set (0.06 sec)
+
+mysql> select * from customers where name like' %i';
+Empty set (0.00 sec)
+
+mysql> select * from customers where name like'    ';
+Empty set (0.00 sec)
+
+mysql> select * from customers where name like'____';
++----+------+-----+-------------+----------+----------+
+| ID | NAME | AGE | ADDRESS     | SALARY   | phoneno  |
++----+------+-----+-------------+----------+----------+
+|  2 | chai |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh |  22 | banglore    | 25000.00 | 98765456 |
++----+------+-----+-------------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customers where name like'_%i';
++----+-------+-----+-------------+----------+----------+
+| ID | NAME  | AGE | ADDRESS     | SALARY   | phoneno  |
++----+-------+-----+-------------+----------+----------+
+|  2 | chai  |  22 | chitradurga | 24000.00 | 56789000 |
+|  6 | suchi |  24 | banglore    | 17000.00 | 98034576 |
++----+-------+-----+-------------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customers where name like'%in%';
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
+|  4 | bindu  |  24 | magadi  | 33000.00 | 56789012 |
++----+--------+-----+---------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customers where name like'n%';
+Empty set (0.00 sec)
+
+mysql>
+mysql> select * from customers where name like'%n%v';
+Empty set (0.00 sec)
+
+mysql> select * from customers where name like'%v%h';
++----+------+-----+----------+----------+----------+
+| ID | NAME | AGE | ADDRESS  | SALARY   | phoneno  |
++----+------+-----+----------+----------+----------+
+|  3 | vedh |  22 | banglore | 25000.00 | 98765456 |
++----+------+-----+----------+----------+----------+
+1 row in set (0.00 sec)
+
+mysql> where salary bwtween 20000 and 30000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where salary bwtween 20000 and 30000' at line 1
+mysql> select * from customers;
++----+--------+-----+-------------+----------+----------+
+| ID | NAME   | AGE | ADDRESS     | SALARY   | phoneno  |
++----+--------+-----+-------------+----------+----------+
+|  1 | sindhu |  21 | magadi      | 25000.00 | 23456789 |
+|  2 | chai   |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh   |  22 | banglore    | 25000.00 | 98765456 |
+|  4 | bindu  |  24 | magadi      | 33000.00 | 56789012 |
+|  5 | san    |  23 | magadi      | 13000.00 |  9876567 |
+|  6 | suchi  |  24 | banglore    | 17000.00 | 98034576 |
++----+--------+-----+-------------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> where salary bwtween 20000 and 30000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where salary bwtween 20000 and 30000' at line 1
+mysql> select * from customers
+    -> where salary bwtween 20000 and 30000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'bwtween 20000 and 30000' at line 2
+mysql> select * from customers where salary between 20000 and 30000;
++----+--------+-----+-------------+----------+----------+
+| ID | NAME   | AGE | ADDRESS     | SALARY   | phoneno  |
++----+--------+-----+-------------+----------+----------+
+|  1 | sindhu |  21 | magadi      | 25000.00 | 23456789 |
+|  2 | chai   |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh   |  22 | banglore    | 25000.00 | 98765456 |
++----+--------+-----+-------------+----------+----------+
+3 rows in set (0.06 sec)
+
+mysql> select * from customers where  phoneno is null;
+Empty set (0.00 sec)
+
+mysql> select * from customers where  name='sindhu' and age=21;
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
++----+--------+-----+---------+----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from customers where age=22 and salary>22000;
++----+------+-----+-------------+----------+----------+
+| ID | NAME | AGE | ADDRESS     | SALARY   | phoneno  |
++----+------+-----+-------------+----------+----------+
+|  2 | chai |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh |  22 | banglore    | 25000.00 | 98765456 |
++----+------+-----+-------------+----------+----------+
+2 rows in set (0.05 sec)
+
+mysql> select * from customers where name like '%s' or name like '%v';
+Empty set (0.00 sec)
+
+mysql> select * from customers where name like '%s' or name like '%u';
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
+|  4 | bindu  |  24 | magadi  | 33000.00 | 56789012 |
++----+--------+-----+---------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customers where adress='banglore' or salary=22000;
+ERROR 1054 (42S22): Unknown column 'adress' in 'where clause'
+mysql> select * from customers where age=22 or salary=22000;
++----+------+-----+-------------+----------+----------+
+| ID | NAME | AGE | ADDRESS     | SALARY   | phoneno  |
++----+------+-----+-------------+----------+----------+
+|  2 | chai |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh |  22 | banglore    | 25000.00 | 98765456 |
++----+------+-----+-------------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customers where age=22 or salary<22000;
++----+-------+-----+-------------+----------+----------+
+| ID | NAME  | AGE | ADDRESS     | SALARY   | phoneno  |
++----+-------+-----+-------------+----------+----------+
+|  2 | chai  |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh  |  22 | banglore    | 25000.00 | 98765456 |
+|  5 | san   |  23 | magadi      | 13000.00 |  9876567 |
+|  6 | suchi |  24 | banglore    | 17000.00 | 98034576 |
++----+-------+-----+-------------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from customers where age not in(22,24);
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
+|  5 | san    |  23 | magadi  | 13000.00 |  9876567 |
++----+--------+-----+---------+----------+----------+
+2 rows in set (0.04 sec)
+
+mysql> select * from customers where name not like '%s'
+    -> select * from customers where name not like '%s';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from customers where name not like '%s'' at line 2
+mysql> select * from customers where name not like '%s';
++----+--------+-----+-------------+----------+----------+
+| ID | NAME   | AGE | ADDRESS     | SALARY   | phoneno  |
++----+--------+-----+-------------+----------+----------+
+|  1 | sindhu |  21 | magadi      | 25000.00 | 23456789 |
+|  2 | chai   |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh   |  22 | banglore    | 25000.00 | 98765456 |
+|  4 | bindu  |  24 | magadi      | 33000.00 | 56789012 |
+|  5 | san    |  23 | magadi      | 13000.00 |  9876567 |
+|  6 | suchi  |  24 | banglore    | 17000.00 | 98034576 |
++----+--------+-----+-------------+----------+----------+
+6 rows in set (0.06 sec)
+
+mysql> select * from customers where name not like '____';
++----+--------+-----+----------+----------+----------+
+| ID | NAME   | AGE | ADDRESS  | SALARY   | phoneno  |
++----+--------+-----+----------+----------+----------+
+|  1 | sindhu |  21 | magadi   | 25000.00 | 23456789 |
+|  4 | bindu  |  24 | magadi   | 33000.00 | 56789012 |
+|  5 | san    |  23 | magadi   | 13000.00 |  9876567 |
+|  6 | suchi  |  24 | banglore | 17000.00 | 98034576 |
++----+--------+-----+----------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> select * from customers where age not in(22,24) and salary between 22000 and 24000;
+Empty set (0.00 sec)
+
+mysql> select * from customers where age not in(22,24) and salary between 22000 and 30000;
++----+--------+-----+---------+----------+----------+
+| ID | NAME   | AGE | ADDRESS | SALARY   | phoneno  |
++----+--------+-----+---------+----------+----------+
+|  1 | sindhu |  21 | magadi  | 25000.00 | 23456789 |
++----+--------+-----+---------+----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from customers where salary not between 25000 and 30000 and age in(22,24) and adress='banglore'
+    -> ;
+ERROR 1054 (42S22): Unknown column 'adress' in 'where clause'
+mysql> select * from customers where salary not between 25000 and 30000 and age in(22,24);
++----+-------+-----+-------------+----------+----------+
+| ID | NAME  | AGE | ADDRESS     | SALARY   | phoneno  |
++----+-------+-----+-------------+----------+----------+
+|  2 | chai  |  22 | chitradurga | 24000.00 | 56789000 |
+|  4 | bindu |  24 | magadi      | 33000.00 | 56789012 |
+|  6 | suchi |  24 | banglore    | 17000.00 | 98034576 |
++----+-------+-----+-------------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| amazon             |
+| customers          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| salesman           |
+| sys                |
++--------------------+
+7 rows in set (2.21 sec)
+
+mysql> use customers;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| customers  |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select min(salary) from customers;
++-------------+
+| min(salary) |
++-------------+
+|    13000.00 |
++-------------+
+1 row in set (0.23 sec)
+
+mysql> select sun(salary) from cutomers;
+ERROR 1146 (42S02): Table 'customers.cutomers' doesn't exist
+mysql> select sun(salary) from customers;
+ERROR 1305 (42000): FUNCTION customers.sun does not exist
+mysql> select sum(salary) from customers;
++-------------+
+| sum(salary) |
++-------------+
+|   137000.00 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from customers;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.07 sec)
+
+mysql> select average(salary) from customers;
+ERROR 1305 (42000): FUNCTION customers.average does not exist
+mysql> select avg(salary) from customers;
++--------------+
+| avg(salary)  |
++--------------+
+| 22833.333333 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) as "Highest Salary" from customers;
++----------------+
+| Highest Salary |
++----------------+
+|       33000.00 |
++----------------+
+1 row in set (0.14 sec)
+
+mysql> select * from customers;
++----+--------+-----+-------------+----------+----------+
+| ID | NAME   | AGE | ADDRESS     | SALARY   | phoneno  |
++----+--------+-----+-------------+----------+----------+
+|  1 | sindhu |  21 | magadi      | 25000.00 | 23456789 |
+|  2 | chai   |  22 | chitradurga | 24000.00 | 56789000 |
+|  3 | vedh   |  22 | banglore    | 25000.00 | 98765456 |
+|  4 | bindu  |  24 | magadi      | 33000.00 | 56789012 |
+|  5 | san    |  23 | magadi      | 13000.00 |  9876567 |
+|  6 | suchi  |  24 | banglore    | 17000.00 | 98034576 |
++----+--------+-----+-------------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select max(salary) as "highest salary", min(salary) as" lowest salary" ,avg(salary) as "average salary" from customers;
++----------------+---------------+----------------+
+| highest salary | lowest salary | average salary |
++----------------+---------------+----------------+
+|       33000.00 |      13000.00 |   22833.333333 |
++----------------+---------------+----------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> select count(age) from customers where salary=25000;
++------------+
+| count(age) |
++------------+
+|          2 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select count(age) from customers where salary=25000 and age=21;
++------------+
+| count(age) |
++------------+
+|          1 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary),min(salary) from customers where age=22;
++-------------+-------------+
+| max(salary) | min(salary) |
++-------------+-------------+
+|    25000.00 |    24000.00 |
++-------------+-------------+
+1 row in set (0.00 sec)
+
